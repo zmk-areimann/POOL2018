@@ -10,6 +10,11 @@ class PoolDriver:
     ent_list = []
     tt = 60
 
+    fill_time = 5
+    drain_time = 5
+    wave_time = 5
+
+
     def __init__(self,lines,cb,et,pls):
         self.n_lines = lines
         self.cbox_list = cb
@@ -26,38 +31,92 @@ class PoolDriver:
         def run_pb(i):
             timer = int(self.ent_list[i].get())*self.tt
             pb[i]["maximum"] = timer
-            print(timer)
+            wave_flag = 0
             for t in range(timer):
                 time.sleep(1)
                 pb[i]["value"] = t+1
                 pb[i].update()
-                print(self.tt, t)
+
                 # place your code here
-                print("------------         HERE COMES THE CODE!!, every second")
+
                 if self.cbox_list[i].get() == self.pools[0]:
-                    print("p1")
+
+                    if t <= self.fill_time:
+                        print(t, "/", timer, "fill p1")
+                        if wave_flag > 0:
+                            wave_flag = 0
+
+                    if self.fill_time < t < timer-self.drain_time:
+                        wave_flag += 1
+                        if wave_flag <= self.wave_time:
+                            print(t, "/", timer, "wave p1: drain")
+                        else:
+                            print(t, "/", timer, "wave p1: fill")
+
+                        if wave_flag == 2*self.wave_time:
+                            wave_flag = 0
+
+                    if timer-self.drain_time <= t:
+                        print(t, "/", timer, "drain p1")
 
 
                 elif self.cbox_list[i].get() == self.pools[1]:
-                    print("p2")
+
+                    if t <= self.fill_time:
+                        print(t, "/", timer, "fill p2")
+                        if wave_flag > 0:
+                            wave_flag = 0
+
+                    if self.fill_time < t < timer-self.drain_time:
+                        wave_flag += 1
+                        if wave_flag <= self.wave_time:
+                            print(t, "/", timer, "wave p2: drain")
+                        else:
+                            print(t, "/", timer, "wave p2: fill")
+
+                        if wave_flag == 2*self.wave_time:
+                            wave_flag = 0
+
+                    if timer-self.drain_time <= t:
+                        print(t, "/", timer, "drain p2")
 
 
                 elif self.cbox_list[i].get() == self.pools[2]:
-                    print("p3")
+
+                    if t <= self.fill_time:
+                        print(t, "/", timer, "fill p3")
+                        if wave_flag > 0:
+                            wave_flag = 0
+
+                    if self.fill_time < t < timer-self.drain_time:
+                        wave_flag += 1
+                        if wave_flag <= self.wave_time:
+                            print(t, "/", timer, "wave p3: drain")
+                        else:
+                            print(t, "/", timer, "wave p3: fill")
+
+                        if wave_flag == 2*self.wave_time:
+                            wave_flag = 0
+
+                    if timer-self.drain_time <= t:
+                        print(t, "/", timer, "drain p3")
 
 
                 elif self.cbox_list[i].get() == self.pools[3]:
-                    print("rns")
+                    print(t, "/", timer, "rinse")
 
 
                 else:
-                    print("ERROR!!")
+                    print("ERROR!! this must not happen..")
+
+
+
 
                 #print(self.cbox_list[i].get())
 
 
 
-                print("------------         End of Loop..")
+
             print("------------\n")
 
         for i in range(self.n_lines):

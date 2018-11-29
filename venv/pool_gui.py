@@ -53,7 +53,7 @@ class PoolGUI:
 
         # create red background style
         s = ttk.Style()
-        s.configure("Red.TEntry", background="red")
+        s.configure("Red.TEntry", fieldbackground="red")
 
         # list for control
         tt=[]

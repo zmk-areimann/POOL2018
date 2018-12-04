@@ -1,7 +1,10 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
 import pickle
+import os.path
+from tkinter import messagebox
 import pool_driver as pd
+
 
 
 class PoolGUI:
@@ -12,6 +15,7 @@ class PoolGUI:
     cbox_list =[]  # comboboxes for pool selection
     ent_list = []  # entries for timing options
     lab_list = []  # number of entries
+
 
     def add_line(self):
 
@@ -82,7 +86,8 @@ class PoolGUI:
             pool.run_experiment()
 
     def load(self):
-        filename = filedialog.askopenfilename(initialdir="/", title="Select file",
+        home = os.path.expanduser('~')
+        filename = filedialog.askopenfilename(initialdir=home, title="Select file",
                                               filetypes=[("Olympic Pool Files", "*.opl")])
         file = open(filename, "rb")
         obj = pickle.load(file)
@@ -129,8 +134,9 @@ class PoolGUI:
             cbox.append(self.cbox_list[i].get())
             ent.append(self.ent_list[i].get())
 
-        filename = filedialog.asksaveasfilename(initialdir="/", title="Select file",
-                                                  filetypes=[("Olympic Pool Files", "*.opl")])
+        home = os.path.expanduser('~')
+        filename = filedialog.asksaveasfilename(initialdir=home, title="Select file",
+                                                filetypes=[("Olympic Pool Files", "*.opl")])
         file = open(filename, "wb")
         pickle.dump([cbox, ent, n], file)
         file.close()
@@ -189,6 +195,14 @@ class PoolGUI:
             self.ent_list.append(ent)  # <-- store the entries in list!
 
 
+
+
 root = tk.Tk()
 GUI = PoolGUI(root)
+
+def on_closing():
+    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+        root.destroy()
+
+root.protocol("WM_DELETE_WINDOW", on_closing)
 root.mainloop()

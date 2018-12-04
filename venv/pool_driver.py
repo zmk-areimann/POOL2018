@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from threading import Thread
+from tkinter import messagebox
 import time
+
 
 
 class PoolDriver:
@@ -124,6 +126,13 @@ class PoolDriver:
         print("------------\n")
 
         slave = tk.Tk()
+
+        def on_closing():
+            if messagebox.askokcancel("Quit", "Do you want to quit?"):
+                slave.destroy()
+
+        slave.protocol("WM_DELETE_WINDOW", on_closing)
+
         slave.title("Pool 2018 - Experiment")
         pb = []
         for i in range(self.n_lines):
